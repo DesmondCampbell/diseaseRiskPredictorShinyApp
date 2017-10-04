@@ -1,4 +1,4 @@
-# pedigree containing a pair of MZs and a triplet of DZs
+#### Family with MZ twins and DZ triplets
 # demonstrates how the relation.MZ and relation.DZ columns are used to specify twinings
 #
 famid	id	fatherid	motherid	sex	affected	age	deceased	relation.MZ	relation.DZ	cannabis	pgs	pgsCannabis

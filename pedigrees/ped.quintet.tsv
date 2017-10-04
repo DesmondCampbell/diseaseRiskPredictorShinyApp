@@ -1,0 +1,12 @@
+#### Family with quints (2 MZ pairs)
+# demonstrates how the relation.MZ and relation.DZ columns are used to specify twinings
+#
+famid	id	fatherid	motherid	sex	affected	age	deceased	relation.MZ	relation.DZ	cannabis	pgs	pgsCannabis
+1	11	0	0	1	1	49	1	0	0	2	NA	0
+1	12	0	0	2	0	39	0	0	0	NA	NA	0
+1	13	11	12	1	1	20	0	1	0	2	NA	0
+1	15	11	12	1	0	20	0	1	1	NA	NA	0
+1	14	11	12	2	1	20	0	2	1	NA	NA	0
+1	16	11	12	2	0	20	0	2	2	NA	NA	0
+1	17	11	12	1	NA	20	0	0	2	NA	NA	0
+1	18	11	12	1	NA	20	0	0	0	NA	NA	0

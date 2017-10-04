@@ -9,6 +9,26 @@
 
 graphics.off()
 
+cat("INFO: starting shiny app server.R, in -", getwd(), '\n' )
+
+
+library(shiny)
+library(shinysky)
+library(shinyAce)
+
+library(diseaseRiskPredictor)
+if(T){
+  fnRep( "patch kinship2::plot.pedigree()")
+  assignInNamespace( "plot.pedigree", diseaseRiskPredictor:::plot.pedigree.FIXED, ns="kinship2")
+}
+
+
+
+# examples code common to client and server
+fnRep("create example pedigrees and disease models")
+source("examplesSrc.R")
+
+
 
 # creates a per process file for any plots to go into
 # rely on process death to close the plot file
@@ -23,21 +43,12 @@ if(bPlotToFile) {
   iDevFilePlot
 }
 
-# examples code common to client and server
-source("examplesSrc.R")
-
-library(shiny)
-suppressPackageStartupMessages(library(shinysky))
-suppressPackageStartupMessages(library(shinyAce))
-
-suppressPackageStartupMessages(library(diseaseRiskPredictor))
-if(T){
-  fnRep( "patch kinship2::plot.pedigree()")
-  assignInNamespace( "plot.pedigree", diseaseRiskPredictor:::plot.pedigree.FIXED, ns="kinship2")
-}
 
 
 
+# report on setup
+cat("\n")
+fnRep("START OF setup diagnostic info")
 fnRep("Below is some diagnostic information regarding the setup")
 fnRep("sessionInfo() reports")
 print( sessionInfo())
@@ -53,11 +64,11 @@ print(Sys.getenv('PATH'))
 print(strsplit( split=";",Sys.getenv('PATH'))[[1]])
 cat("\n")
 if( 'devtools' %in% installed.packages()[,"Package"] ){
-  library('devtools')
-  fnRep("find_rtools(debug=TRUE) reports")
-  print(find_rtools(debug=TRUE))
+  fnRep("devtools::find_rtools(debug=TRUE) reports")
+  print(devtools::find_rtools(debug=TRUE))
   cat("\n")
 }
+fnRep("END OF setup diagnostic info\n")
 
 
 
@@ -680,7 +691,7 @@ shinyServer(function(input, output, session) {
       vsRF <- dimnames(lRiskEst$lDis$aCov)[[1]]
       vsRF <- vsRF[ vsRF != "liability" ]
       fnStr(vsRF)
-      vbxCols <- colnames(dfPedRisk) %in% c("id","affected","age","expressedProportionOfLifetimeRisk","risk",vsRF)
+      vbxCols <- colnames(dfPedRisk) %in% c("id","affected","age","expressedProportionOfLifetimeRisk","risk","nofYears","nYearRisk",vsRF)
       dfPedRisk <- dfPedRisk[,vbxCols,drop=F]	
       fnStr(dfPedRisk)
       

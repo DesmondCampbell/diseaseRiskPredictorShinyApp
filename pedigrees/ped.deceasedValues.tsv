@@ -1,14 +1,12 @@
-#### Demo sex values
-# pedigree demonstrating range of valid values for sex column, showing how they are represented diagramatically
-# sex=1 = male, sex=2 = female, 
-# sex=3 = miscarriage/abortion
-# sex=4 = sex unknown
+#### Demo deceased
+# pedigree demonstrating range of valid values for deceased column, showing how they are represented diagramatically
+# deceased=0 = alive
+# deceased=1 = dead
+# deceased=NA is not allowed
 # see - kinship2 R Package documentation and 
 # see - http://dukepersonalizedmedicine.org/sites/dukepersonalizedmedicine.org/files/documents/Standard_Pedigree_Symbols.pdf
 #
 famid	id	fatherid	motherid	sex	affected	age	deceased	relation.MZ	relation.DZ	cannabis	pgs	pgsCannabis
-1	11	0	0	1	1	49	1	0	0	2	NA	0
+1	11	0	0	1	0	49	1	0	0	2	NA	0
 1	12	0	0	2	0	39	0	0	0	NA	NA	0
 1	13	11	12	1	0	20	0	0	0	2	2	0
-1	14	11	12	3	0	12	0	0	0	NA	NA	0
-1	15	11	12	4	0	9	0	0	0	NA	-2	0

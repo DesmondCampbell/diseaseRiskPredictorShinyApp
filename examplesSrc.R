@@ -4,23 +4,42 @@ library(hellno)
 str(data.frame(letters)[,1])
 
 # create ped file examples info
-sDirPed <- "pedigrees"
-sDirPedEx <- file.path(sDirPed)
-vsFilePedEx <- dir(sDirPedEx)
-dfPedExInfo <- data.frame( file=c(NA,vsFilePedEx), title=NA, stringsAsFactors=F )
+sDirPedEx <- "pedigrees"
+vsPathPedEx <- dir(sDirPedEx, full=T)
+# discard directories
+vbx <- !file.info(vsPathPedEx)$isdir
+vsPathPedEx <- vsPathPedEx[vbx]
+
+dfPedExInfo <- data.frame( file=basename(vsPathPedEx), title=NA, path=vsPathPedEx, stringsAsFactors=F )
+dfPedExInfo
+sRegExpTitleSignifier <- "^#### "
+for( rr in 1:nrow(dfPedExInfo)){
+	sFirstLine <- readLines(dfPedExInfo$path[rr], n=1)
+	fnStr(sFirstLine)
+	if(!grepl( sRegExpTitleSignifier, sFirstLine ) ) next
+	sTitle <- sub( sRegExpTitleSignifier, "", sFirstLine )
+	dfPedExInfo$title[rr] <- sTitle
+}
+# reorder
+dfPedExInfo <- dfPedExInfo[order(dfPedExInfo$title),]
+
+dfPedExInfo <- rbind( data.frame( file=NA, title="None Selected", path=NA, stringsAsFactors=F ), dfPedExInfo )
+dfPedExInfo
+if(F){
 dfPedExInfo$title[ is.na(dfPedExInfo$file) ] <- "None Selected"
 dfPedExInfo$title[ dfPedExInfo$file=="ped.p2c2.tsv" ] <- "Nuclear family"
 dfPedExInfo$title[ dfPedExInfo$file=="ped.g4p2c3.tsv" ] <- "Nuclear family with grandparents"
 dfPedExInfo$title[ dfPedExInfo$file=="kinship2.sample.ped.2.mzdz.tsv" ] <- "Twins example"
-dfPedExInfo$path <- file.path(sDirPedEx,dfPedExInfo$file)
 dfPedExInfo$path[ is.na(dfPedExInfo$file) ] <- NA
 vbx <- is.na(dfPedExInfo$title)
 dfPedExInfo$title[vbx] <- dfPedExInfo$file[vbx]
+}
 
 # validate
 if(length(unique(dfPedExInfo$title)) != nrow(dfPedExInfo)) stop("The set of Ped file titles contains one or more duplicates")
 fnStr(dfPedExInfo)
 print(dfPedExInfo)
+
 
 
 # create dis file examples info
@@ -37,7 +56,9 @@ for( rr in 1:nrow(dfDisExInfo)) {
   dfDisExInfo$title[rr] <- sTitle
 }
 # sort
-dfDisExInfo <- dfDisExInfo[order(dfDisExInfo$title),]
+dfDisExInfo$bNumbered <- grepl("^[0-9]", dfDisExInfo$title )
+dfDisExInfo <- dfDisExInfo[order(dfDisExInfo$bNumbered,dfDisExInfo$title),]
+dfDisExInfo$bNumbered <- NULL
 # add none selected
 dfDisExInfo <- rbind( data.frame( file=NA, title="None Selected", path=NA, stringsAsFactors=F ), dfDisExInfo )
 # validate

@@ -1,3 +1,4 @@
+#### Nuclear Family
 famid	id	fatherid	motherid	sex	affected	age	deceased	relation.MZ	relation.DZ	cannabis	pgs	pgsCannabis
 1	11	0	0	1	0	49	1	0	0	2	NA	0
 1	12	0	0	2	0	39	0	0	0	NA	NA	0
