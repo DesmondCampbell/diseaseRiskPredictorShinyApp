@@ -1,0 +1,8 @@
+# consanguineous pedigree
+famid	id	fatherid	motherid	sex	affected	age	deceased	relation.MZ	relation.DZ	cannabis	pgs	pgsCannabis
+1	11	0	0	1	1	79	1	0	0	2	NA	0
+1	12	0	0	2	NA	69	0	0	0	NA	NA	0
+1	13	11	12	1	NA	45	0	0	0	2	NA	0
+1	14	11	12	2	1	48	0	0	0	NA	NA	0
+1	15	11	12	1	0	50	0	0	0	NA	NA	0
+1	16	13	14	2	NA	15	0	0	0	NA	NA	0
