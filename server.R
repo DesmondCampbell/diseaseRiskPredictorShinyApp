@@ -1,3 +1,18 @@
+#!/usr/bin/env Rscript
+
+
+
+#options(shiny.error=browser)
+#options(error=NULL)
+
+#options( warn=0, error=recover)
+#options( warn=2, error=recover)
+options( warn=0, error=NULL)
+#options( warn=2, error=NULL) # use this setting for formal testing
+
+options(stringsAsFactors = FALSE) # hurray!!!
+
+
 
 # This is the server logic for a Shiny web application.
 # You can find out more about building applications with Shiny here:
@@ -11,6 +26,21 @@ graphics.off()
 
 cat("INFO: starting shiny app server.R, in -", getwd(), '\n' )
 
+
+
+# add a new path to libpaths into which the package can be locally installed
+# create the local directory if not already there
+sLibDir <- "./library"
+bLocalLib <- file.info(sLibDir)$isdir
+if(is.na(bLocalLib)) bLocalLib <- FALSE
+if(bLocalLib){
+  fnRep("Prepend local directory to library paths")
+  # XXXX don't do this if you are installing packages for the first time, otherwise they will be installed in this local dir (which you might delete)
+  if( ! sLibDir %in% .libPaths() ) .libPaths( c( sLibDir, .libPaths()) )
+  cat("INFO: Library paths are -\n"); print(.libPaths())
+}
+
+#stop("XXXX")
 
 library(shiny)
 library(shinysky)
@@ -146,6 +176,16 @@ fnGetDataTableFromString <- function( sTbl )
 
 
 
+# this code is for running the app on local machine
+if(F){
+  # XXXX copy and paste below to R terminal to launch in browser on local machine
+  rm(list=ls())
+  sAppDir <- "diseaseriskpredictor"
+  sWD <- file.path("c:/Desmond/HKU/EuGei/riskApp/16dec15",sAppDir)
+  setwd(sWD)
+  
+  runApp()
+}
 
 
 #### SSSS ############################################
