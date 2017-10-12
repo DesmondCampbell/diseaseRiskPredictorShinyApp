@@ -1,6 +1,6 @@
 
-library(diseaseRiskPredictor)
-library(hellno)
+#library(diseaseRiskPredictor)
+#library(hellno)
 str(data.frame(letters)[,1])
 
 # create ped file examples info

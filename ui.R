@@ -1,16 +1,65 @@
+options(shiny.trace=TRUE)
 
 # This is the user-interface definition of a Shiny web application.
 # You can find out more about building applications with Shiny here:
 #
 # http://shiny.rstudio.com
 #
+fnLogUi <- function(...) { cat( file=stderr(), "UI.R:", ..., "\n" ); utils::flush.console() }
 
+cat(file=stderr(), "\n\n\n\n")
+fnLogUi( "starting shiny app ui.R, in -", getwd(), '\n' )
+fnLogUi( installed.packages()["Rcpp",] )
+
+sCmd <- "env | grep '^R_' | sort 1>&2"
+fnLogUi("system(",sCmd,")")
+print(file=stderr(),system(sCmd))
+
+sCmd <- "env | grep '^SHINY_' | sort 1>&2"
+fnLogUi("system(",sCmd,")")
+print(file=stderr(),system(sCmd))
+
+#stop("stopping -", getwd())
+
+# add a new path to libpaths into which the package can be locally installed
+# create the local directory if not already there
+sLibDir <- "./library"
+bLocalLib <- file.info(sLibDir)$isdir
+fnLogUi(".libPaths()=", .libPaths(),"\n")
+
+if(is.na(bLocalLib)) bLocalLib <- FALSE
+if(bLocalLib){
+  fnLogUi("Prepend local directory to library paths")
+  # XXXX don't do this if you are installing packages for the first time, otherwise they will be installed in this local dir (which you might delete)
+  if( ! sLibDir %in% .libPaths() ) .libPaths( c( sLibDir, .libPaths()) )
+  fnLogUi("Library paths are -", .libPaths())
+}
+fnLogUi(".libPaths()=", .libPaths(),"\n")
+
+
+
+
+fnLogUi(".packages()=",.packages())
+fnLogUi("getNamespaceVersion()=", getNamespaceVersion("Rcpp"))
+
+fnLogUi("loading and attaching packages")
+library(Rcpp)
+fnLogUi(".packages()=",.packages())
+suppressPackageStartupMessages(library(diseaseRiskPredictor))
 library(shiny)
-
 suppressPackageStartupMessages(library(shiny))
 suppressPackageStartupMessages(library(shinysky))
 suppressPackageStartupMessages(library(shinyAce))
+fnLogUi(".packages()=",.packages())
+fnLogUi("loading and attaching packages")
 suppressPackageStartupMessages(library(diseaseRiskPredictor))
+
+# examples code common to client and server
+fnRep("create example pedigrees and disease models")
+source("examplesSrc.R")
+
+
+
 
 
 shinyUI( navbarPage("Disease Risk Predictor"
@@ -372,7 +421,7 @@ shinyUI( navbarPage("Disease Risk Predictor"
                                  sidebarPanel(
                                    h1("Download")
                                    , p( "Download command line program and documentation")
-                                   , downloadButton('downloadZip', 'Download')
+                                   , downloadButton('downloadZip', "DON'T Download -\n THIS IS CURRENT OUT OF DATE")
                                  ),
                                  mainPanel(
                                    h2("Download Details")

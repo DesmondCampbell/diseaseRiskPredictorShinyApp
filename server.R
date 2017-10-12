@@ -1,4 +1,5 @@
 #!/usr/bin/env Rscript
+options(shiny.trace=TRUE)
 
 
 
@@ -24,29 +25,34 @@ options(stringsAsFactors = FALSE) # hurray!!!
 
 graphics.off()
 
-cat("INFO: starting shiny app server.R, in -", getwd(), '\n' )
+fnLogSr <- function(...) { cat( file=stderr(), "SERVER.R:", ..., "\n" ); utils::flush.console() }
 
+cat(file=stderr(), "\n\n\n\n")
+fnLogSr( "starting shiny app server.R, in -", getwd(), '\n' )
 
+#stop("stopping -", getwd())
 
 # add a new path to libpaths into which the package can be locally installed
 # create the local directory if not already there
 sLibDir <- "./library"
 bLocalLib <- file.info(sLibDir)$isdir
+fnLogSr( "libpaths=", .libPaths(),"\n")
 if(is.na(bLocalLib)) bLocalLib <- FALSE
 if(bLocalLib){
-  fnRep("Prepend local directory to library paths")
+  fnLogSr("Prepend local directory to library paths")
   # XXXX don't do this if you are installing packages for the first time, otherwise they will be installed in this local dir (which you might delete)
   if( ! sLibDir %in% .libPaths() ) .libPaths( c( sLibDir, .libPaths()) )
-  cat("INFO: Library paths are -\n"); print(.libPaths())
+  fnLogSr("Library paths are -", .libPaths(), "\n" )
 }
 
-#stop("XXXX")
 
+fnLogSr(".packages()=",.packages())
+library(Rcpp)
+library(diseaseRiskPredictor)
+fnRep <- function( ..., file=stderr() ) { cat( "REPORT:", ..., "\n", file=file ); utils::flush.console() }
 library(shiny)
 library(shinysky)
 library(shinyAce)
-
-library(diseaseRiskPredictor)
 if(T){
   fnRep( "patch kinship2::plot.pedigree()")
   assignInNamespace( "plot.pedigree", diseaseRiskPredictor:::plot.pedigree.FIXED, ns="kinship2")
@@ -191,7 +197,8 @@ if(F){
 #### SSSS ############################################
 
 shinyServer(function(input, output, session) {
-  
+fnRep( "START shinyServer()", getwd(), "\n") 
+ 
   #### risk calc impl control
   # state info regarding risk calc impl
   m_bGibbsSamplerImplCpp <- T
