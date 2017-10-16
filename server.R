@@ -1,25 +1,20 @@
 #!/usr/bin/env Rscript
+
+# This is the server logic for a Shiny web application.
+# You can find out more about building applications with Shiny here:
+# http://shiny.rstudio.com
+#
+
+#### options regarding error and warning
 options(shiny.trace=TRUE)
-
-
-
 #options(shiny.error=browser)
 #options(error=NULL)
-
 #options( warn=0, error=recover)
 #options( warn=2, error=recover)
 options( warn=0, error=NULL)
 #options( warn=2, error=NULL) # use this setting for formal testing
 
 options(stringsAsFactors = FALSE) # hurray!!!
-
-
-
-# This is the server logic for a Shiny web application.
-# You can find out more about building applications with Shiny here:
-#
-# http://shiny.rstudio.com
-#
 
 
 
@@ -30,33 +25,30 @@ fnLogSr <- function(...) { cat( file=stderr(), "SERVER.R:", ..., "\n" ); utils::
 cat(file=stderr(), "\n\n\n\n")
 fnLogSr( "starting shiny app server.R, in -", getwd(), '\n' )
 
-#stop("stopping -", getwd())
-
-# add a new path to libpaths into which the package can be locally installed
-# create the local directory if not already there
+#### if a local library directory exists, prepend it to the library paths
 sLibDir <- "./library"
-bLocalLib <- file.info(sLibDir)$isdir
-fnLogSr( "libpaths=", .libPaths(),"\n")
-if(is.na(bLocalLib)) bLocalLib <- FALSE
+bLocalLib <- isTRUE( file.info(sLibDir)$isdir )
 if(bLocalLib){
   fnLogSr("Prepend local directory to library paths")
-  # XXXX don't do this if you are installing packages for the first time, otherwise they will be installed in this local dir (which you might delete)
+  fnLogSr( ".libpaths()=", .libPaths() )
   if( ! sLibDir %in% .libPaths() ) .libPaths( c( sLibDir, .libPaths()) )
-  fnLogSr("Library paths are -", .libPaths(), "\n" )
 }
+fnLogSr( ".libpaths()=", .libPaths() )
 
-
+#### load and attach packages
+fnLogSr("load and attach packages")
 fnLogSr(".packages()=",.packages())
 library(Rcpp)
 library(diseaseRiskPredictor)
 fnRep <- function( ..., file=stderr() ) { cat( "REPORT:", ..., "\n", file=file ); utils::flush.console() }
-library(shiny)
-library(shinysky)
-library(shinyAce)
 if(T){
   fnRep( "patch kinship2::plot.pedigree()")
   assignInNamespace( "plot.pedigree", diseaseRiskPredictor:::plot.pedigree.FIXED, ns="kinship2")
 }
+library(shiny)
+library(shinysky)
+library(shinyAce)
+fnLogSr(".packages()=",.packages())
 
 
 
@@ -72,13 +64,12 @@ bPlotToFile <- !interactive()
 bPlotToFile <- T
 if(bPlotToFile) {
   sFilePlot <- paste0(tempfile(),".pdf")
-  fnRep("Creating a temp file for any plots to be written into")
+  fnRep("Create a temp file for any plots to be written into -", sFilePlot )
   pdf(sFilePlot, paper="a4")
   fnStr(sFilePlot)
   iDevFilePlot <- dev.cur()
   iDevFilePlot
 }
-
 
 
 
@@ -105,8 +96,6 @@ if( 'devtools' %in% installed.packages()[,"Package"] ){
   cat("\n")
 }
 fnRep("END OF setup diagnostic info\n")
-
-
 
 
 
