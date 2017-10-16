@@ -826,7 +826,7 @@ fnRep( "START shinyServer()", getwd(), "\n")
   
   
   # download zip file name
-  m_sFileDownloadZip <- "mdrc.18nov15.zip"
+  m_sFileDownloadZip <- "diseaseRiskPredictionTestHarness.zip"
   
   output$downloadZip <- downloadHandler(
     filename = m_sFileDownloadZip,

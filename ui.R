@@ -414,7 +414,7 @@ shinyUI( navbarPage("Disease Risk Predictor"
          sidebarPanel(
            h1("Download")
            , p( "Download command line program and documentation")
-           , downloadButton('downloadZip', "DON'T Download -\n THIS IS CURRENT OUT OF DATE")
+           , downloadButton('downloadZip', "Download")
          ),
          mainPanel(
            h2("Download Details")
@@ -424,14 +424,14 @@ shinyUI( navbarPage("Disease Risk Predictor"
            , HTML( "<LI>It can estimate the precision of risk estimates generated")
            , HTML( "<LI>It generates a file containing 1000s of draws from the pedigree's joint liability distribution after conditioning on all disease risk relevant information")
            , HTML( "</UL>")
-           , p("A word of warning, the installation involves installing a lot of R packages so is not worth it unless you want the extra functionality.")
+           , p("A word of warning, the installation involves installing some R packages and Rtools, so is not worth it unless you want the extra functionality.")
            , h3("Validiation Testing")
-           , p("The download also contains the testing done to validate that the command line program and the website correctly estimate risk")
+           , p("The download also contains the testing done to validate that the command line program and the website correctly estimate risk.")
            , h3("Instructions for Installation")
            , HTML( "<UL>")
            , HTML( "<LI>Download the zip file containing the program, documentation, example files, etc.")
            , HTML( "<LI>Unzip the zip file on your local machine")
-           , HTML( "<LI>The download includes a Word doc on how to complete installation")
+           , HTML( "<LI>Read the README.html")
            , HTML( "</UL>")
          )
         )
